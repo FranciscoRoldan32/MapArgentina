@@ -1,54 +1,43 @@
 package construccion;
 
-public class Arista {
+import java.util.Comparator;
 
-	private int origen;
-	private int destino;
-	private int peso;
+public class Arista implements Comparator<Arista> {
 
-	public Arista(int origen, int destino, int peso) {
-		this.origen = origen;
-		this.destino = destino;
-		this.peso = peso;
-	}
+	private Vertice origen;
 
-	public int getOrigen() {
+	private Vertice destino;
+
+	private Integer weight;
+
+	public Arista(Vertice origen,Vertice destino, Integer weight){
+	        this.origen = origen;
+	        this.destino = destino;
+	        this.weight = weight;
+	    }
+
+	public Vertice getOrigen() {
 		return origen;
 	}
 
-	public void setOrigen(int origen) {
-		this.origen = origen;
-	}
-
-	public int getDestino() {
+	public Vertice getDestino() {
 		return destino;
 	}
 
-	public void setDestino(int destino) {
-		this.destino = destino;
-	}
-
-	public int getPeso() {
-		return peso;
-	}
-
-	public void setPeso(int peso) {
-		this.peso = peso;
+	public Integer getWeight() {
+		return weight;
 	}
 
 	@Override
-	public String toString() {
-		return "Arista [origen=" + origen + ", destino=" + destino + ", peso=" + peso + "]";
+	public int compare(Arista e1, Arista e2) {
+		return e1.weight - e2.weight;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Arista)) {
-			return false;
-		}
-		Arista other = (Arista) obj;
-		return destino == other.destino && origen == other.origen && peso == other.peso;
-	}
+//	@Override
+//	public int compare(Arista o1, Arista o2) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
 }
 
 
