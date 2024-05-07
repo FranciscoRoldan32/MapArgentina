@@ -10,13 +10,20 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -26,6 +33,8 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 import org.openstreetmap.gui.jmapviewer.interfaces.MapPolygon;
+
+
 
 public class InterfaceMapa implements ActionListener {
 
@@ -39,6 +48,12 @@ public class InterfaceMapa implements ActionListener {
 	private JPanel panelPrincipal;
 	private JPanel panelMapa;
 	private JPanel panelDeControl;
+	private JPanel panelDeSimilaridad;
+	private URL image = getClass().getResource("/images/Icon_mark_3.png");
+	private JComboBox<String> listaDeProvincias;
+	private JButton botonCarga;
+	private JButton botonGenerarConexiones;
+	private JButton botonEliminar;
 
 	/**
 	 * Launch the application.
@@ -116,6 +131,9 @@ public class InterfaceMapa implements ActionListener {
 		crearMenu();
 		generarPanelMapa();
 		generarPanelDeControl();
+
+		ImageIcon icon = new ImageIcon(image);
+		frame.setIconImage(icon.getImage());
 	}
 
 	private void generarFrame() {
@@ -128,6 +146,7 @@ public class InterfaceMapa implements ActionListener {
 		panelPrincipal = new JPanel(new GridLayout(1, 2));
 		frame.getContentPane().add(panelPrincipal);
 		frame.setVisible(true);
+
 	}
 
 	private void crearMenu() {
@@ -184,6 +203,9 @@ public class InterfaceMapa implements ActionListener {
 		panelPrincipal.add(panelDeControl);
 
 		generarTitulo();
+		generarPanelDeSimilaridad();
+		generarBotones();
+		generarListaDeUbicacionesIngresadas();
 
 	}
 
@@ -191,13 +213,85 @@ public class InterfaceMapa implements ActionListener {
 		JTextField titulo = new JTextField();
 		titulo.setBorder(new LineBorder(new Color(171, 173, 179)));
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
-		titulo.setBackground(new Color(0, 128, 255));
+		titulo.setBackground(new Color(0, 191, 255));
 		titulo.setFont(new Font("Unispace", Font.BOLD, 27));
 		titulo.setText("Diseñando Regiones");
 		titulo.setBounds(21, 0, 531, 44);
 		titulo.setEditable(false);
 		panelDeControl.add(titulo);
 	}
+	
+	private void generarPanelDeSimilaridad() {
+		panelDeSimilaridad = new JPanel();
+		panelDeSimilaridad.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelDeSimilaridad.setBackground(new Color(0, 191, 255));
+		panelDeSimilaridad.setBounds(22, 85, 530, 127);
+		panelDeSimilaridad.setLayout(null);
+		panelDeControl.add(panelDeSimilaridad);
+		
+
+		generarComboBox();
+//		generarInputs();
+		generarBotonCarga();
+		
+		JLabel ingresarProvincias = new JLabel("Ingresar Provincias");
+		ingresarProvincias.setFont(new Font("Unispace", Font.BOLD, 16));
+		ingresarProvincias.setBounds(10, 0, 231, 22);
+		panelDeSimilaridad.add(ingresarProvincias);
+	}
+	
+	private void generarComboBox() {
+		String[] provincias = { "Buenos Aires", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre Ríos",
+				"Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta",
+				"San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero", "Tierra del Fuego",
+				"Tucumán" };
+
+		listaDeProvincias = new JComboBox<String>();
+		for (int i = 0; i < provincias.length; i++) {
+			listaDeProvincias.addItem(provincias[i]);
+		}
+		listaDeProvincias.setFont(new Font("Unispace", Font.BOLD, 11));
+		listaDeProvincias.setBounds(325, 33, 171, 22);
+		panelDeSimilaridad.add(listaDeProvincias);
+	}
+	
+	private void generarBotonCarga() {
+		botonCarga = new JButton("Cargar");
+		botonCarga.setEnabled(true);
+		botonCarga.setBounds(10, 97, 121, 19);
+		botonCarga.addActionListener(this);
+		panelDeSimilaridad.add(botonCarga);
+		botonCarga.setFont(new Font("Unispace", Font.BOLD, 13));
+	}
+	
+private void generarBotones() {
+		
+
+		
+		botonEliminar = new JButton("Generar Conexion");
+		botonEliminar.setFont(new Font("Unispace", Font.BOLD, 13));
+		botonEliminar.setEnabled(false);
+		botonEliminar.addActionListener(this);
+		botonEliminar.setBounds(21, 464, 200, 23);
+		panelDeControl.add(botonEliminar);
+		
+		botonGenerarConexiones = new JButton("Ejecutar Algoritmo");
+		botonGenerarConexiones.setEnabled(false);
+		botonGenerarConexiones.setFont(new Font("Unispace", Font.BOLD, 13));
+		botonGenerarConexiones.setBounds(300, 464, 206, 23);
+		botonGenerarConexiones.addActionListener(this);
+		botonGenerarConexiones.setToolTipText("Genera las conexiones en el mapa en base a las localidades ingresadas");
+		panelDeControl.add(botonGenerarConexiones);
+	}
+
+private void generarListaDeUbicacionesIngresadas() {
+	JLabel _localidadesIngresadas = new JLabel("Localidades ingresadas:");
+	_localidadesIngresadas.setFont(new Font("Unispace", Font.BOLD, 15));
+	_localidadesIngresadas.setBounds(21, 295, 278, 23);
+	panelDeControl.add(_localidadesIngresadas);
+	
+	
+}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
