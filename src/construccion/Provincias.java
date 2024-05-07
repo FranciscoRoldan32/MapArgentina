@@ -2,12 +2,13 @@ package construccion;
 
 import java.util.ArrayList;
 
-
 public class Provincias {
 	private String nombre;
 	private double lat;
 	private double longitud;
 	private static ArrayList<Provincias> provincias;
+
+
 
 	public Provincias(String nombre,double lat,double longitud) {
 		this.nombre=nombre;
@@ -88,7 +89,7 @@ public class Provincias {
 	}	
 		 
 	
-	
+
 
 	
 	}
