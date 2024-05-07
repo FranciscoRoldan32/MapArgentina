@@ -2,79 +2,84 @@ package construccion;
 
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 
 public class Grafo {
 
-	    private ArrayList<Vertice> provincia;
+	    private static ArrayList<Vertice> vertices;
 	    private ArrayList<Arista> aristas;
-
-
+	    private ArrayList<Provincias>provs;
+	    private Random rand;
 
 	    public Grafo(){
-	        this.provincia = new ArrayList<Vertice>();
+	    	Provincias.crearProvs();
+	        this.vertices = new ArrayList<Vertice>();
+	        this.provs= Provincias.getListProv();
+	        this.rand=new Random();
 	    }
 
 
-	    public Vertice addVertex(String data){
-	        Vertice nuevaProvincia = new Vertice(data);
-	        this.provincia.add(nuevaProvincia);
-	        return nuevaProvincia;
+	    public Vertice addVertex(){
+	    	int index = generarNumAleatorio();
+	    	Provincias prov= provs.get(index);
+	    	Coordinate coords = new Coordinate(prov.getLat(),prov.getLongitud());
+	        Vertice vertice = new Vertice(prov.getNombre(),coords);
+	        provs.remove(index);
+			if (!vertices.contains(vertice)) {
+				this.vertices.add(vertice);
+			}
+	        return vertice;
 	    }
 
-	    public void addEdge(Vertice initProv, Vertice finalProv, Integer weight){
-	        initProv.addEdge(finalProv, weight);
-	        finalProv.addEdge(initProv, weight);
+	    public void addEdge(Vertice initVertex, Vertice finalVertex, Integer weight){
+	        initVertex.addEdge(finalVertex, weight);
+	        finalVertex.addEdge(initVertex, weight);
 	    }
 
-	    public void removeEdge(Vertice initProv, Vertice finalProv){
-	        initProv.removeEdge(finalProv);
-	        finalProv.removeEdge(initProv);
+	    public void removeEdge(Vertice initVertex, Vertice finalVertex){
+	        initVertex.removeEdge(finalVertex);
+	        finalVertex.removeEdge(initVertex);
 	    }
 
 	    public void removeVertex(Vertice prov){
-	        provincia.remove(prov);
+	        vertices.remove(prov);
 	    }
 
-	    public ArrayList<Vertice> getProvincias() {
-	        return provincia;
+	    public ArrayList<Vertice> getVertices() {
+	        return vertices;
 	    }
 
 	    public void print(){
-	        for(Vertice p : this.provincia){
+	        for(Vertice p : this.vertices){
 	            p.print();
 	        }
 	    }
 
-	    private static String[] generateProvinceArgentinaStrings() {
-			return new String[]{ 
-	            "Buenos Aires", "Ciudad Autonoma de Buenos Aires", "Catamarca",
-	            "Chaco", "Chubut", "Cordoba", "Corrientes", "Entre Rios",
-	            "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza",
-	            "Misiones", "Neuquen", "Rio Negro", "Salta", "San Juan",
-	            "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero",
-	            "Tierra del Fuego", "Antartida e Islas del Atlantico Sur",
-	            "Tucuman"
-				};
-
-	        }
-
-	    public static void main(String[] args) {
-	       Grafo Argentina = new Grafo();
-
-	        String[] nombreProv = generateProvinceArgentinaStrings();
-	        Vertice[] provinces = new Vertice[nombreProv.length];
-	        for (int i = 0; i < nombreProv.length; i++) {
-	            provinces[i] = Argentina.addVertex(nombreProv[i]);
-	        }
 	    
-	        //Esto es una prueba no es algo definitivo pero es para ver si funciona los metodos
-	    
-	        // Ejemplo de cómo agregar algunos Edges o Artistas
-	        Argentina.addEdge(provinces[0], provinces[1], 1); // Ejemplo de borde entre Buenos Aires y capital
-	        Argentina.addEdge(provinces[0], provinces[2], 5); // Ejemplo de borde entre Buenos Aires y Catamarca
-	    
-	        // Imprime el grafo
-	        Argentina.print();
+	 
+//
+//	    public static void main(String[] args) {
+//	       Grafo Argentina = new Grafo();
+//
+//	        ArrayList<Vertice> nombreProv = vertices;
+//	        Vertice[] provinces = new Vertice[nombreProv.size()];
+//	        for (int i = 0; i < nombreProv.size(); i++) {
+//	            provinces[i] = Argentina.addVertex(nombreProv[i]);
+//	        }
+//	    
+//	        //Esto es una prueba no es algo definitivo pero es para ver si funciona los metodos
+//	    
+//	        // Ejemplo de cómo agregar algunos Edges o Artistas
+//	        Argentina.addEdge(provinces[0], provinces[1], 1); // Ejemplo de borde entre Buenos Aires y capital
+//	        Argentina.addEdge(provinces[0], provinces[2], 5); // Ejemplo de borde entre Buenos Aires y Catamarca
+//	    
+//	        // Imprime el grafo
+//	        Argentina.print();
+//	    }
+	    private int generarNumAleatorio() {
+	    	return rand.nextInt(provs.size());
 	    }
 }
