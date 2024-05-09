@@ -33,11 +33,7 @@ public class Arista implements Comparator<Arista> {
 		return e1.weight - e2.weight;
 	}
 
-//	@Override
-//	public int compare(Arista o1, Arista o2) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
+
 }
 
 
