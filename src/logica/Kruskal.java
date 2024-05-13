@@ -11,7 +11,7 @@ import construccion.Grafo;
 import construccion.Vertice;
 public class Kruskal {
 
-	private Grafo kruskalGraph;
+	private Grafo kruskalGrafo;
 	private ArrayList<Arista> sortedEdges;
 	private Set<Vertice> vertices;
 	
@@ -30,14 +30,14 @@ public class Kruskal {
 
 
     public Grafo minimumSpanningTree(Grafo graphOriginal) {
-        kruskalGraph = new Grafo();
+        kruskalGrafo = new Grafo();
 
 
         //Agrega todo las aristas en una lista y colecta todo los Vertice
         for (Vertice vertex : graphOriginal.getVertices()) {
             
             //Esto es para agregar al grafo nuevo todo los Vertice que nesesita
-            kruskalGraph.addVertex(vertex.getLabel());
+            kruskalGrafo.addVertex(vertex.getLabel());
             
             vertices.add(vertex);
 
@@ -68,7 +68,7 @@ public class Kruskal {
             if (kruskalHelper.find(src) != kruskalHelper.find(dest)){
 
                 //Se agrega el caso arista con su peso
-                kruskalGraph.addEdge(src, dest, weight);
+                kruskalGrafo.addEdge(src, dest, weight);
 
                 System.out.println(src.getLabel() + " --> " + dest.getLabel() + " == " + edge.getWeight());
 
@@ -78,7 +78,7 @@ public class Kruskal {
         }
 
         //Retornamos el grafo todo armado con su arista corresponientes 
-        return kruskalGraph;
+        return kruskalGrafo;
 
     }
 

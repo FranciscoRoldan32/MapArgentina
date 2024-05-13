@@ -1,8 +1,8 @@
 package construccion;
 
-import java.util.Comparator;
 
-public class Arista implements Comparator<Arista> {
+
+public class Arista  {
 
 	private Vertice origen;
 
@@ -28,11 +28,7 @@ public class Arista implements Comparator<Arista> {
 		return weight;
 	}
 
-	@Override
-	public int compare(Arista e1, Arista e2) {
-		return e1.weight - e2.weight;
-	}
-
+	
 
 }
 
